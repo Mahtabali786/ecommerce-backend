@@ -1,0 +1,11 @@
+import { Router } from "express";
+import { authenticate, authorize } from "../../shared/middlewares/authenticate.js";
+import { validate } from "../../shared/middlewares/validate.js";
+import { createProduct, getProduct, listProducts, updateProduct } from "./product.controller.js";
+import { createProductSchema, listProductsSchema, productIdSchema, updateProductSchema } from "./product.validator.js";
+const router = Router();
+router.get("/", validate(listProductsSchema), listProducts);
+router.get("/:id", validate(productIdSchema), getProduct);
+router.post("/", authenticate, authorize("ADMIN"), validate(createProductSchema), createProduct);
+router.patch("/:id", authenticate, authorize("ADMIN"), validate(updateProductSchema), updateProduct);
+export default router;

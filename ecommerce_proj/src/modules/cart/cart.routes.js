@@ -1,0 +1,12 @@
+import { Router } from "express";
+import { authenticate } from "../../shared/middlewares/authenticate.js";
+import { validate } from "../../shared/middlewares/validate.js";
+import { addCartItem, getCart, removeCartItem, updateCartItem } from "./cart.controller.js";
+import { addCartItemSchema, removeCartItemSchema, updateCartItemSchema } from "./cart.validator.js";
+const router = Router();
+router.use(authenticate);
+router.get("/", getCart);
+router.post("/items", validate(addCartItemSchema), addCartItem);
+router.patch("/items/:itemId", validate(updateCartItemSchema), updateCartItem);
+router.delete("/items/:itemId", validate(removeCartItemSchema), removeCartItem);
+export default router;
